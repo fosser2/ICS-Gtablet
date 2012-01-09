@@ -1,4 +1,4 @@
-// NI Adam GPS library
+// NI Smba1002 GPS library
 // Uses an Open Source NMEA parsing lib
 // Written by MrGuy
 
@@ -14,7 +14,7 @@
 
 //#define  GPS_DEBUG  1
 
-#define  LOG_TAG  "gps_adam"
+#define  LOG_TAG  "gps_smba1002"
 #define GPS_TTYPORT "/dev/ttyHS3"
 #define MAX_NMEA_CHARS 85
 
@@ -34,8 +34,8 @@
 
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
-static GpsInterface adamGpsInterface;
-static GpsCallbacks* adamGpsCallbacks;
+static GpsInterface smba1002GpsInterface;
+static GpsCallbacks* smba1002GpsCallbacks;
 static pthread_t NMEAThread;
 char NMEA[MAX_NMEA_CHARS];
 pthread_mutex_t mutGPS = PTHREAD_MUTEX_INITIALIZER;
@@ -64,8 +64,8 @@ typedef struct _nmeaArgs
 /////////////////////////////////////////////////////////
 
 static void updateStatus(void* arg) {
-	if (adamGpsCallbacks != NULL) {
-		adamGpsCallbacks->status_cb((GpsStatus*)arg);
+	if (smba1002GpsCallbacks != NULL) {
+		smba1002GpsCallbacks->status_cb((GpsStatus*)arg);
 	}
 	free(arg);
 }
@@ -96,8 +96,8 @@ static void updateNMEA(void* arg) {
 	GpsUtcTime time = Args->time;
 	char* NMEA2 = Args->NMEA;
 	//LOGV("Debug GPS: %s", NMEA2);
-	if (adamGpsCallbacks != NULL) {
-		adamGpsCallbacks->nmea_cb(time, NMEA2, strlen(NMEA2));
+	if (smba1002GpsCallbacks != NULL) {
+		smba1002GpsCallbacks->nmea_cb(time, NMEA2, strlen(NMEA2));
 	}
 	free(NMEA2);
 	free(arg);	
@@ -122,8 +122,8 @@ static void updateRMC(void* arg) {
 	newLoc.longitude = convertCoord(info->lon);
 	newLoc.timestamp = getUTCTime(&(info->utc));
 	LOGV("Lat: %lf Long: %lf", newLoc.latitude, newLoc.longitude);
-	if (adamGpsCallbacks != NULL) {
-		adamGpsCallbacks->location_cb(&newLoc);
+	if (smba1002GpsCallbacks != NULL) {
+		smba1002GpsCallbacks->location_cb(&newLoc);
 	}
 	endRMC:
 	free(info);
@@ -177,8 +177,8 @@ static void updateGGA(void* arg) {
 	newLoc.longitude = convertCoord(info->lon);
 	newLoc.timestamp = getUTCTime(&(info->utc));
 	LOGV("Lat: %lf Long: %lf", newLoc.latitude, newLoc.longitude);
-	if (adamGpsCallbacks != NULL) {
-		adamGpsCallbacks->location_cb(&newLoc);
+	if (smba1002GpsCallbacks != NULL) {
+		smba1002GpsCallbacks->location_cb(&newLoc);
 	}
 	endGGA:	
 	free(info);
@@ -297,8 +297,8 @@ static void updateGSV(void* arg) {
 	pthread_mutex_lock(&mutUseMask);
 	svStatus->used_in_fix_mask = useMask;
 	pthread_mutex_unlock(&mutUseMask);
-	if (adamGpsCallbacks != NULL) {
-		adamGpsCallbacks->sv_status_cb(svStatus);
+	if (smba1002GpsCallbacks != NULL) {
+		smba1002GpsCallbacks->sv_status_cb(svStatus);
 	}
 
 	//LOGV("Pushing data");
@@ -346,24 +346,24 @@ void processNMEA() {
 	Args->info = info;
 	nArgs->time = getUTCTime(&(info->utc));
 	
-	adamGpsCallbacks->create_thread_cb("adamgps-nmea", updateNMEA, nArgs);
+	smba1002GpsCallbacks->create_thread_cb("smba1002gps-nmea", updateNMEA, nArgs);
 	
 	switch (info->smask) {
 	case 1:
 		//< GGA - Essential fix data which provide 3D location and accuracy data.
-		adamGpsCallbacks->create_thread_cb("adamgps-gga", updateGGA, Args);
+		smba1002GpsCallbacks->create_thread_cb("smba1002gps-gga", updateGGA, Args);
 		break;
 	case 2: 
 		//< GSA - GPS receiver operating mode, SVs used for navigation, and DOP values.
-		adamGpsCallbacks->create_thread_cb("adamgps-gsa", updateGSA, Args);
+		smba1002GpsCallbacks->create_thread_cb("smba1002gps-gsa", updateGSA, Args);
 		break;
 	case 4: 
 		//< GSV - Number of SVs in view, PRN numbers, elevation, azimuth & SNR values.
-		adamGpsCallbacks->create_thread_cb("adamgps-gsv", updateGSV, Args);
+		smba1002GpsCallbacks->create_thread_cb("smba1002gps-gsv", updateGSV, Args);
 		break;
 	case 8: 
 		//< RMC - Recommended Minimum Specific GPS/TRANSIT Data.
-		//adamGpsCallbacks->create_thread_cb("adamgps-loc", updateRMC, Args);
+		//smba1002GpsCallbacks->create_thread_cb("smba1002gps-loc", updateRMC, Args);
 		free(Args->info);
 		free(Args->NMEA);
 		free(Args);			
@@ -435,8 +435,8 @@ return NULL;
 static int gpslib_init(GpsCallbacks* callbacks) {
 int ret = 0;
 LOGV("Callbacks set");
-adamGpsCallbacks = callbacks;
-adamGpsCallbacks->set_capabilities_cb(0);
+smba1002GpsCallbacks = callbacks;
+smba1002GpsCallbacks->set_capabilities_cb(0);
 GpsStatus *status = malloc(sizeof(GpsStatus));
 
 struct stat st;
@@ -449,7 +449,7 @@ if(stat(GPS_TTYPORT, &st) != 0) {
 
 status->size = sizeof(GpsStatus);
 status->status = GPS_STATUS_ENGINE_ON;
-adamGpsCallbacks->create_thread_cb("adamgps-status", updateStatus, status);
+smba1002GpsCallbacks->create_thread_cb("smba1002gps-status", updateStatus, status);
 
 end:
 return ret;
@@ -460,7 +460,7 @@ LOGV("Gps start");
 GpsStatus *stat = malloc(sizeof(GpsStatus));
 stat->size = sizeof(GpsStatus);
 stat->status = GPS_STATUS_SESSION_BEGIN;
-adamGpsCallbacks->create_thread_cb("adamgps-status", updateStatus, stat);
+smba1002GpsCallbacks->create_thread_cb("smba1002gps-status", updateStatus, stat);
 pthread_mutex_lock(&mutGPS);
 gpsOn = 1;
 pthread_mutex_unlock(&mutGPS);	
@@ -473,7 +473,7 @@ LOGV("GPS stop");
 GpsStatus *stat = malloc(sizeof(GpsStatus));
 stat->size = sizeof(GpsStatus);
 stat->status = GPS_STATUS_SESSION_END;
-adamGpsCallbacks->create_thread_cb("adamgps-status", updateStatus, stat);
+smba1002GpsCallbacks->create_thread_cb("smba1002gps-status", updateStatus, stat);
 pthread_mutex_lock(&mutGPS);
 gpsOn = 0;
 pthread_mutex_unlock(&mutGPS);
@@ -484,7 +484,7 @@ static void gpslib_cleanup() {
 GpsStatus *stat = malloc(sizeof(GpsStatus));
 stat->size = sizeof(GpsStatus);
 stat->status = GPS_STATUS_ENGINE_OFF;
-adamGpsCallbacks->create_thread_cb("adamgps-status", updateStatus, stat);
+smba1002GpsCallbacks->create_thread_cb("smba1002gps-status", updateStatus, stat);
 LOGV("GPS clean");
 return;
 }
@@ -519,18 +519,18 @@ return NULL;
 const GpsInterface* gps__get_gps_interface(struct gps_device_t* dev) 
 {
 	LOGV("Gps get_interface");
-	adamGpsInterface.size = sizeof(GpsInterface);
-	adamGpsInterface.init = gpslib_init;
-	adamGpsInterface.start = gpslib_start;
-	adamGpsInterface.stop = gpslib_stop;
-	adamGpsInterface.cleanup = gpslib_cleanup;
-	adamGpsInterface.inject_time = gpslib_inject_time;
-	adamGpsInterface.inject_location = gpslib_inject_location;
-	adamGpsInterface.delete_aiding_data = gpslib_delete_aiding_data;
-	adamGpsInterface.set_position_mode = gpslib_set_position_mode;
-	adamGpsInterface.get_extension = gpslib_get_extension;
+	smba1002GpsInterface.size = sizeof(GpsInterface);
+	smba1002GpsInterface.init = gpslib_init;
+	smba1002GpsInterface.start = gpslib_start;
+	smba1002GpsInterface.stop = gpslib_stop;
+	smba1002GpsInterface.cleanup = gpslib_cleanup;
+	smba1002GpsInterface.inject_time = gpslib_inject_time;
+	smba1002GpsInterface.inject_location = gpslib_inject_location;
+	smba1002GpsInterface.delete_aiding_data = gpslib_delete_aiding_data;
+	smba1002GpsInterface.set_position_mode = gpslib_set_position_mode;
+	smba1002GpsInterface.get_extension = gpslib_get_extension;
 
-	return &adamGpsInterface;
+	return &smba1002GpsInterface;
 }
 	
 	
@@ -559,7 +559,7 @@ const struct hw_module_t HAL_MODULE_INFO_SYM = {
 	.version_major = 1,
 	.version_minor = 0,
 	.id = GPS_HARDWARE_MODULE_ID,
-	.name = "Adam GPS Module",
+	.name = "Smba1002 GPS Module",
 	.author = "MrGuy",
 	.methods = &gps_module_methods,
 };

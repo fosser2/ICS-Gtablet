@@ -1,4 +1,4 @@
-# hardware/libadam_gps/Android.mk
+# hardware/libsmba1002_gps/Android.mk
 
   LOCAL_PATH := $(call my-dir)/nmea
 

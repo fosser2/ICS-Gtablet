@@ -19,16 +19,16 @@
 #
 # Everything in this directory will become public
 
-DEVICE := gtablet
+DEVICE := smba1002
 MANUFACTURER := viewsonic
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-LOCAL_KERNEL := device/viewsonic/gtablet/kernel
+LOCAL_KERNEL := device/viewsonic/smba1002/kernel
 else
 LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
 
-DEVICE_PACKAGE_OVERLAYS := device/viewsonic/gtablet/overlay
+DEVICE_PACKAGE_OVERLAYS := device/viewsonic/smba1002/overlay
 
 # This device is xhdpi.  However the platform doesn't
 # currently contain all of the bitmaps at xhdpi density so
@@ -42,36 +42,36 @@ PRODUCT_LOCALES += mdpi
 
 PRODUCT_COPY_FILES := \
     $(LOCAL_KERNEL):kernel \
-    device/viewsonic/gtablet/files/init.harmony.rc:root/init.harmony.rc \
-    device/viewsonic/gtablet/files/ueventd.harmony.rc:root/ueventd.harmony.rc \
-    device/viewsonic/gtablet/files/nvram.txt:system/etc/wifi/nvram.txt
+    device/viewsonic/smba1002/files/init.harmony.rc:root/init.harmony.rc \
+    device/viewsonic/smba1002/files/ueventd.harmony.rc:root/ueventd.harmony.rc \
+    device/viewsonic/smba1002/files/nvram.txt:system/etc/wifi/nvram.txt
 
 # APK
 #PRODUCT_COPY_FILES += \
-#    device/notionink/adam/app/Quadrant.apk:system/app/Quadrant.apk \
-#    device/notionink/adam/app/.root_browser:system/etc/.root_browser \
-#    device/notionink/adam/app/RootBrowserFree.apk:system/app/RootBrowserFree.apk 
+#    device/viewsonic/smba1002/app/Quadrant.apk:system/app/Quadrant.apk \
+#    device/viewsonic/smba1002/app/.root_browser:system/etc/.root_browser \
+#    device/viewsonic/smba1002/app/RootBrowserFree.apk:system/app/RootBrowserFree.apk 
 
 # Modules
 PRODUCT_COPY_FILES += \
-    device/viewsonic/gtablet/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
-    device/viewsonic/gtablet/modules/bcm4329.ko:system/lib/modules/bcm4329.ko
+    device/viewsonic/smba1002/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
+    device/viewsonic/smba1002/modules/bcm4329.ko:system/lib/modules/bcm4329.ko
 
 # Bluetooth
 PRODUCT_COPY_FILES += \
-    device/viewsonic/gtablet/files/bcm4329.hcd:system/etc/firmware/bcm4329.hcd
+    device/viewsonic/smba1002/files/bcm4329.hcd:system/etc/firmware/bcm4329.hcd
 	
 # Touchscreen
 PRODUCT_COPY_FILES += \
-    device/viewsonic/gtablet/files/at168_touch.idc:system/usr/idc/at168_touch.idc 
+    device/viewsonic/smba1002/files/at168_touch.idc:system/usr/idc/at168_touch.idc 
 
 # Graphics
 PRODUCT_COPY_FILES += \
-    device/viewsonic/gtablet/files/media_profiles.xml:system/etc/media_profiles.xml
+    device/viewsonic/smba1002/files/media_profiles.xml:system/etc/media_profiles.xml
 
 # Generic
 PRODUCT_COPY_FILES += \
-   device/viewsonic/gtablet/files/vold.fstab:system/etc/vold.fstab
+   device/viewsonic/smba1002/files/vold.fstab:system/etc/vold.fstab
 
 PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
@@ -148,5 +148,5 @@ $(call inherit-product, frameworks/base/build/tablet-dalvik-heap.mk)
 
 # Make it optional to include vendor stuff..Just to be nice ;)
 ifneq ($(TARGET_IGNORE_VENDOR),yes)
-$(call inherit-product, vendor/viewsonic/gtablet/device-vendor.mk)
+$(call inherit-product, vendor/viewsonic/smba1002/device-vendor.mk)
 endif

@@ -17,7 +17,7 @@
 # This variable is set first, so it can be overridden
 # by BoardConfigVendor.mk
 
-DEVICE := gtablet
+DEVICE := smba1002
 MANUFACTURER := viewsonic 
 
 BOARD_USES_GENERIC_AUDIO := true
@@ -27,7 +27,7 @@ BOARD_USES_AUDIO_LEGACY := false
 TARGET_USES_OLD_LIBSENSORS_HAL := false
 
 # Use the non-open-source parts, if they're present
--include vendor/viewsonic/gtablet/BoardConfigVendor.mk
+-include vendor/viewsonic/smba1002/BoardConfigVendor.mk
 
 TARGET_NO_RECOVERY := true
 TARGET_NO_BOOTLOADER := true
@@ -51,9 +51,9 @@ BOARD_PAGE_SIZE := 0x00000800
 TARGET_NO_RADIOIMAGE := true
 TARGET_BOARD_PLATFORM := tegra
 TARGET_BOOTLOADER_BOARD_NAME := harmony
-#TARGET_BOARD_INFO_FILE := device/notionink/adam/board-info.txt
+#TARGET_BOARD_INFO_FILE := device/viewsonic/smba1002/board-info.txt
 
-BOARD_EGL_CFG := device/viewsonic/gtablet/files/egl.cfg
+BOARD_EGL_CFG := device/viewsonic/smba1002/files/egl.cfg
 
 #BOARD_USES_HGL := true
 #BOARD_USES_OVERLAY := true
@@ -64,7 +64,7 @@ USE_OPENGL_RENDERER := true
 
 # device-specific extensions to the updater binary
 #TARGET_RECOVERY_UPDATER_LIBS += librecovery_updater_ventana
-#TARGET_RELEASETOOLS_EXTENSIONS := device/notionink/adam
+#TARGET_RELEASETOOLS_EXTENSIONS := device/viewsonic/smba1002
 #TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x01000000
 #BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x01000000
@@ -72,7 +72,7 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0c800000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x105c0000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
-TARGET_PREBUILT_KERNEL := device/viewsonic/gtablet/kernel
+TARGET_PREBUILT_KERNEL := device/viewsonic/smba1002/kernel
 
 #TARGET_PROVIDES_INIT_RC := true
 #TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true

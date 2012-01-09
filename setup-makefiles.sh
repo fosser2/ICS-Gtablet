@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DEVICE=gtablet
+DEVICE=smba1002
 MANUFACTURER=viewsonic
 
 mkdir -p ../../../vendor/${MANUFACTURER}/${DEVICE}
@@ -40,7 +40,7 @@ mkdir -p ../../../vendor/${MANUFACTURER}/${DEVICE}
 #PRODUCT_COPY_FILES := \\
 #    vendor/__MANUFACTURER__/__DEVICE__/proprietary/proprietary/libsecril-client.so:obj/lib/libsecril-client.so
 
-# All the blobs necessary for ADAM
+# All the blobs necessary for SMBA1002
 PRODUCT_COPY_FILES := \\
 EOF
 

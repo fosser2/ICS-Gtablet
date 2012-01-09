@@ -61,7 +61,7 @@ const struct sensors_module_t HAL_MODULE_INFO_SYM = {
         .version_major = 1,
         .version_minor = 0,
         .id = SENSORS_HARDWARE_MODULE_ID,
-        .name = "Adam SENSORS Module",
+        .name = "Smba1002 SENSORS Module",
         .author = "Jens Andersen",
         .methods = &sensors_module_methods,
     },

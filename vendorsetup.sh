@@ -20,4 +20,4 @@
 # In particular, you can add lunch options with the add_lunch_combo
 # function: add_lunch_combo generic-eng
 export USE_CCACHE=1
-add_lunch_combo full_gtablet-userdebug
+add_lunch_combo full_smba1002-userdebug

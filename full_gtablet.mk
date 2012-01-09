@@ -20,17 +20,17 @@ PRODUCT_PACKAGES := \
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 
-# Inherit from ADAM device
-$(call inherit-product, device/viewsonic/gtablet/device.mk)
+# Inherit from SMBA1002 device
+$(call inherit-product, device/viewsonic/smba1002/device.mk)
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
-$(call inherit-product-if-exists, vendor/viewsonic/gtablet/device-vendor.mk)
+$(call inherit-product-if-exists, vendor/viewsonic/smba1002/device-vendor.mk)
 
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
-PRODUCT_NAME := full_gtablet
-PRODUCT_DEVICE := gtablet
+PRODUCT_NAME := full_smba1002
+PRODUCT_DEVICE := smba1002
 PRODUCT_BRAND := Viewsonic
 PRODUCT_MODEL := Viewsonic Gtablet
